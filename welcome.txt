@@ -1,2 +1,0 @@
-print("welocme");
-print("how do you do")
