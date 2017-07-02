@@ -13,18 +13,6 @@ public class HomeWork5 {
     static int operationQntShakedSort = 0;
     static long t1, t2;
 
-    static void swap(int one, int two) {
-        int temp = array[one];
-        array[one] = array[two];
-        array[two] = temp;
-    }
-
-    static void swap2(int one, int two) {
-        int temp = array2[one];
-        array2[one] = array2[two];
-        array2[two] = temp;
-    }
-
     //1. Попробовать оптимизировать пузырьковую сортировку. Сравнить количество операций
     //сравнения оптимизированной и не оптимизированной программы.
     static void bubleSort(int arr[]) {
@@ -32,10 +20,12 @@ public class HomeWork5 {
         int in, out;
         t1 = System.nanoTime();
         for (out = (arr.length - 1); out >= 1; out--) {
-            operationQntbubbleSort = operationQntbubbleSort + out;
             for (in = 0; in < out; in++) {
                 if (arr[in] > arr[in + 1]) {
-                    swap(in, in + 1);
+                    int temp = arr[in];
+                    arr[in] = arr[in + 1];
+                    arr[in + 1] = temp;
+                    operationQntbubbleSort++;
                 }
             }
         }
@@ -45,30 +35,45 @@ public class HomeWork5 {
     }
 
     //2. Реализовать шейкерную сортировку.
-    static void shakerSort(int arr[]){
+    static void shakerSort(int arr[]) {
         System.out.println("Array before\n" + Arrays.toString(arr));
-        int out, in, min;
+        int leftMark = 1;
+        int rightMark = arr.length -1;
         t1 = System.nanoTime();
-        for (out = 0; out < arr.length - 1; out++) {//outer cycle
-            operationQntShakedSort = operationQntShakedSort + out;
-            min = out;//minimum
-            for (in = out + 1; in < arr.length; in++)
-                if (arr[in] < arr[min])
-                    min = in;//new minimum found
-                    swap2(out, min);
-        }
+        do {
+
+            for (int i = rightMark; i >= leftMark; i--) {
+                if (arr[i - 1] > arr[i]) {
+                    int temp = arr[i];
+                    arr[i] = arr[i - 1];
+                    arr[i - 1] = temp;
+                    operationQntShakedSort++;
+                }
+            }
+            leftMark++;
+            for (int i = leftMark; i <= rightMark; i++) {
+                if (arr[i - 1] > arr[i]) {
+                    int temp = arr[i];
+                    arr[i] = arr[i - 1];
+                    arr[i - 1] = temp;
+                    operationQntShakedSort++;
+                }
+            }
+            rightMark--;
+        } while (leftMark <= rightMark);
         t2 = System.nanoTime();
         System.out.println("Array after shacked sort\n" + Arrays.toString(arr));
         System.out.println("Sorting takes = " + (t2 - t1) + " nanoseconds");
     }
+
     //3. Реализовать бинарный алгоритм поиска в виде функции, которой передается
     //отсортированный массив. Функция возвращает индекс найденного элемента или -1, если
     //элемент не найден.
-    static int binarySearch(int arr[], int searchKey){
+    static int binarySearch(int arr[], int searchKey) {
         int lowerBound = 0;
         int upperBound = arr.length - 1;
         int curIn;
-        while (true){
+        while (true) {
             curIn = (lowerBound + upperBound) / 2;
             if (arr[curIn] == searchKey) {
                 return curIn;
@@ -85,9 +90,9 @@ public class HomeWork5 {
 
     //4. *Подсчитать количество операций для каждой из сортировок и сравнить его с  асимптотической
     // сложностью алгоритма
-    static void algorithmEfficiency(){
+    static void algorithmEfficiency() {
         System.out.println("Expected operations quantity for Bubble sort is O(N * N) = " + array.length *
-                        (array.length - 1) / 2 + "\nCalculated quantity = " + operationQntbubbleSort + " operations");
+                (array.length - 1) / 2 + "\nCalculated quantity = " + operationQntbubbleSort + " operations");
         System.out.println("Expected operations quantity for Shacked sort is O(N * N) = " + array2.length *
                 (array2.length - 1) / 2 + "\nCalculated quantity = " + operationQntShakedSort + " operations");
     }
@@ -98,6 +103,7 @@ public class HomeWork5 {
         algorithmEfficiency();
         System.out.println("Please insert number which you wanna find");
         searchKey = scn.nextInt();
+        scn.close();
         System.out.println("Searched number located at array[" + binarySearch(array, searchKey) + "]");
     }
 }
