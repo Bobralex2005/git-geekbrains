@@ -3,8 +3,8 @@ package Competitors;
 /**
  * Cat class
  */
-public class Cats extends Animal{
-    public Cats(String name, int maxRunDistance, int maxJumpHeight) {
+public class Cat extends Animal{
+    public Cat(String name, int maxRunDistance, int maxJumpHeight) {
         super("Cat", name, maxRunDistance, 0, maxJumpHeight);
     }
 
