@@ -1,4 +1,6 @@
 import java.util.Arrays;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Created by Alexander Bugaev on 09.07.2017.
@@ -11,23 +13,29 @@ public class Main {
 
     //Написать метод, на вход которого подаётся такая строка, метод должен преобразовать строку в
     //двумерный массив типа String[][];
-    public void stringToArray(String str) throws ArrayIndexOutOfBoundsException {
+    public void stringToArray(String str){
         //god bless regex :)
         String[] row = str.split("\n");
-        //System.out.println(Arrays.toString(row));
         int i = 0;
         for (String s : row) {
+            if (i >= 4) throw new MySizeArrayException();
             array[i++] = s.split("\\s");
         }
-        //System.out.println(Arrays.deepToString(array));
     }
 
-    //Преобразовать все элементы массива в числа типа int, просуммировать, поделить полученную
-    //сумму на 2, и вернуть результат;
-    public int stringToInteger() throws NumberFormatException {
-        for (String[] i : array) {
-            for (String j : i) {
-                summ = summ + Integer.parseInt(j);
+    /*2 Далее метод должен пройтись по всем элементам массива, преобразовать в int, и просуммировать.
+    Если в каком-то элементе массива преобразование не удалось (например, в ячейке лежит символ или текст
+    вместо числа), должно быть брошено исключение MyArrayDataException, с детализацией в какой именно
+    ячейке лежат неверные данные. */
+    public int stringToInteger(){
+//        for (String[] i : array) {
+//            for (String j : i) {
+        Pattern p = Pattern.compile("[a-zA-Z]+");
+        for (int i = 0; i < array.length; i++) {
+            for (int j = 0; j < array.length; j++) {
+                Matcher m = p.matcher(array[i][j]);
+                if (m.matches()) throw new MyArrayDataException(i, j);
+                summ = summ + Integer.parseInt(array[i][j]);
             }
         }
         return summ / 2;
@@ -38,23 +46,9 @@ public class Main {
     }
 
     public static void main(String[] args) {
-        //Ваш метод должен бросить исключения в случаях:
-        //○ Если размер матрицы, полученной из строки, не равен 4x4;
-        //○ Если в одной из ячеек полученной матрицы не число; (например символ или слово)
-        //В методе main необходимо вызвать полученный метод, обработать возможные исключения и
-        //вывести результат расчета.
-
         Main main = new Main();
-        try {
-            main.stringToArray(main.getIncomingData());
-        } catch (ArrayIndexOutOfBoundsException e) {
-            e.printStackTrace();
-        }
+        main.stringToArray(main.getIncomingData());
         System.out.println(Arrays.deepToString(main.array));
-        try {
-            System.out.println(main.stringToInteger());
-        } catch (NumberFormatException e) {
-            e.printStackTrace();
-        }
+        System.out.println("Summ of array divided by 2 = " + main.stringToInteger());
     }
 }
