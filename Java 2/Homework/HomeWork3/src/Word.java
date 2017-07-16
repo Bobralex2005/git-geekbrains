@@ -1,3 +1,4 @@
+import java.util.HashMap;
 import java.util.HashSet;
 
 /**
@@ -9,17 +10,14 @@ public class Word {
     слов, из которых состоит массив (дубликаты не считаем). Посчитать сколько раз встречается каждое слово. */
 
     private String[] fruits = {"apple", "orange", "grape", "watermelon", "honeydew", "apple", "plum", "grape", "cherry", "orange"};
-    //private String word;
-    private HashSet<String> hs = new HashSet<String>();
+    private HashMap<String, Integer> hm = new HashMap<>();
 
     public static void main(String[] args) {
         Word work3 = new Word();
 
         for (String words : work3.fruits){
-            if (!work3.hs.add(words)){
-                System.out.print(words + " ");
-            }
+            work3.hm.put(words, work3.hm.getOrDefault(words, 0) + 1);
         }
-        System.out.println("\n" + work3.hs.toString());
+        System.out.println(work3.hm + "\n" + work3.hm.keySet());
     }
 }

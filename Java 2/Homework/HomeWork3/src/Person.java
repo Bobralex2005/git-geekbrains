@@ -14,10 +14,10 @@ public class Person {
         return lastname.hashCode();
     }
 
-    @Override
-    public boolean equals(){
-
-    }
+//    @Override
+//    public boolean equals(){
+//
+//    }
 
 //    public int get(String lastname){
 //        return telNumber;
